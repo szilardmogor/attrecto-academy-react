@@ -59,6 +59,7 @@ const UsersPage = () => {
               user={user}
               handleDeleteUser={handleDeleteUser}
               badges={badges}
+              key={user.id} 
             />
           </div>
         ))}

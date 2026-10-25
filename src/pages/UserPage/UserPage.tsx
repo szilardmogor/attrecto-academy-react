@@ -12,6 +12,8 @@ import TagField from "../../components/tag-field/TagField";
 import { badgesService } from "../../services/badges.service";
 import { userService } from "../../services/user.service";
 import { Button } from "../../components/button/Button";
+import { ProfileImageView } from "../../components/profile-image-view/ProfileImageView";
+import BadgeImage from "../../components/badge-image/BadgeImage";
 
 const schema = Yup.object({
   name: Yup.string().required(),
@@ -82,6 +84,9 @@ export const UserPage = () => {
     navigate("/users");
   };
 
+  const imageUrl = watch("image");
+  const badgeUrl = watch("badges") ?? [];
+
   return (
     <Page title={user ? user.name : "User"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,6 +102,7 @@ export const UserPage = () => {
           register={register}
           error={errors.image?.message}
         />
+        <ProfileImageView className="d-block mx-auto" imageUrl={imageUrl} />
         <Controller
           name="badges"
           control={control}
@@ -112,6 +118,18 @@ export const UserPage = () => {
             />
           )}
         />
+        <div className="d-flex flex-wrap gap-2">
+          {badgeUrl.map(({ id }) => {
+            const badge = badges.find((item) => item.id === id);
+          return badge ? (
+            <BadgeImage 
+              small 
+              url={badge.image} 
+              key={badge.id} 
+            />
+          ) : null;
+        })}
+        </div>
         <div className="mt-3">
           <Button color="secondary" type="button" className="me-2" onClick={goToUsersPage}>
             Back
