@@ -4,6 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { toast } from "react-toastify";
+import { beginApiRequest } from "./requestLoader";
 
 export enum Methods {
   GET = "GET",
@@ -58,16 +59,19 @@ async function request<T = void>({
   ...config
 }: RequestConfig) {
   const url = generateUrl(resource);
+  const endApiRequest = beginApiRequest();
 
-  const requestConfig = {
-    method,
-    url,
-    ...config,
-  };
+  try {
+    const { data: response } = await axios.request<T>({
+      method,
+      url,
+      ...config,
+    });
 
-  const { data: response } = await axios.request<T>(requestConfig);
-
-  return response;
+    return response;
+  } finally {
+    endApiRequest();
+  }
 }
 
 export default request;
