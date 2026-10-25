@@ -34,6 +34,11 @@ const Navbar: FC<NavbarProps> = ({ isLoggedIn, logout }) => {
               </NavLink>
             })
           }
+          {!isLoggedIn && (
+            <NavLink to="/login" className="nav-link me-4">
+              Login
+            </NavLink>
+          )}
         </div>
         <div className="d-flex align-items-center">
           <p className="mb-0">
